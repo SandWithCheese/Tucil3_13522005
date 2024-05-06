@@ -134,7 +134,6 @@ public class App extends JFrame implements ActionListener {
             return;
         }
 
-        // Count the time taken to solve the word ladder
         long startTime = System.nanoTime();
         Tuple<ArrayList<String>, Integer> pathTuple = null;
         switch (method) {
@@ -155,7 +154,7 @@ public class App extends JFrame implements ActionListener {
                 return;
         }
         long endTime = System.nanoTime();
-        if (pathTuple != null) {
+        if (!pathTuple.x.isEmpty()) {
             String[] columnNames = { "Step", "Word" };
             DefaultTableModel model = new DefaultTableModel(columnNames, 0);
             for (int i = 0; i < pathTuple.x.size(); i++) {
@@ -187,7 +186,9 @@ public class App extends JFrame implements ActionListener {
             resultFrame.add(resultPanel);
             resultFrame.setVisible(true);
         } else {
-            resultArea = new JTextArea("No path found from " + start + " to " + goal, 5, 30);
+            resultArea = new JTextArea("No path found from " + start + " to " + goal + "\nNumber of nodes visited: "
+                    + pathTuple.y + "\nTime taken: "
+                    + (endTime - startTime) / 1000000 + " ms", 5, 30);
             resultArea.setFont(new Font("Arial", Font.PLAIN, 24));
             resultArea.setLineWrap(true);
             resultArea.setWrapStyleWord(true);

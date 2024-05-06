@@ -78,6 +78,7 @@ public class GBFS {
             }
         }
 
-        return null;
+        Tuple<ArrayList<String>, Integer> result = new Tuple<>(new ArrayList<>(), visited.size());
+        return result;
     }
 }
