@@ -145,6 +145,10 @@ public class App extends JFrame implements ActionListener {
             return;
         }
 
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long startMemory = runtime.totalMemory() - runtime.freeMemory();
+
         long startTime = System.nanoTime();
         Tuple<ArrayList<String>, Integer> pathTuple = null;
         switch (method) {
@@ -164,6 +168,11 @@ public class App extends JFrame implements ActionListener {
                 resultArea.setText("Invalid method");
                 return;
         }
+
+        long endMemory = runtime.totalMemory() - runtime.freeMemory();
+
+        long memory = endMemory - startMemory;
+
         long endTime = System.nanoTime();
         if (!pathTuple.x.isEmpty()) {
             String[] columnNames = { "Step", "Word" };
@@ -184,7 +193,7 @@ public class App extends JFrame implements ActionListener {
             resultPanel.add(scrollPane, gbc);
 
             resultArea = new JTextArea("Number of nodes visited: " + pathTuple.y + "\nTime taken: "
-                    + (endTime - startTime) / 1000000 + " ms", 5, 30);
+                    + (endTime - startTime) / 1000000 + " ms\n" + "Memory usage: " + memory + " bytes", 5, 30);
             resultArea.setFont(new Font("Arial", Font.PLAIN, 24));
             resultArea.setLineWrap(true);
             resultArea.setWrapStyleWord(true);
@@ -199,7 +208,7 @@ public class App extends JFrame implements ActionListener {
         } else {
             resultArea = new JTextArea("No path found from " + start + " to " + goal + "\nNumber of nodes visited: "
                     + pathTuple.y + "\nTime taken: "
-                    + (endTime - startTime) / 1000000 + " ms", 5, 30);
+                    + (endTime - startTime) / 1000000 + " ms\n" + "Memory usage: " + memory + " bytes", 5, 30);
             resultArea.setFont(new Font("Arial", Font.PLAIN, 24));
             resultArea.setLineWrap(true);
             resultArea.setWrapStyleWord(true);
