@@ -45,13 +45,8 @@ public class AStar {
         this.goal = goal;
     }
 
-    public ArrayList<String> search(File wordlist) {
-        PriorityQueue<ArrayList<String>> queue = new PriorityQueue<>(new Comparator<ArrayList<String>>() {
-            @Override
-            public int compare(ArrayList<String> path1, ArrayList<String> path2) {
-                return Integer.compare(function(path1), function(path2));
-            }
-        });
+    public Tuple<ArrayList<String>, Integer> search(File wordlist) {
+        PriorityQueue<ArrayList<String>> queue = new PriorityQueue<>(Comparator.comparingInt(this::function));
         Set<String> visited = new HashSet<>();
 
         ArrayList<String> initialPath = new ArrayList<>();
@@ -71,8 +66,8 @@ public class AStar {
             }
 
             if (current.equals(goal)) {
-                System.out.println("Path found: " + currentPath);
-                return currentPath;
+                Tuple<ArrayList<String>, Integer> result = new Tuple<>(currentPath, visited.size());
+                return result;
             }
 
             ArrayList<String> neighbors = NodeUtil.getNeighbors(current, wordlist);
@@ -86,7 +81,6 @@ public class AStar {
             }
         }
 
-        System.out.println("No path found from " + start + " to " + goal);
         return null;
     }
 }

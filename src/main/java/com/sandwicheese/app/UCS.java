@@ -1,6 +1,7 @@
 package com.sandwicheese.app;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class UCS {
     // Pada UCS permainan word ladder, definisi dari g(n) adalah jarak dari node
@@ -18,8 +19,8 @@ public class UCS {
         this.goal = goal;
     }
 
-    public void search(File wordlist) {
+    public Tuple<ArrayList<String>, Integer> search(File wordlist) {
         BFS bfs = new BFS(start, goal);
-        bfs.search(wordlist);
+        return bfs.search(wordlist);
     }
 }

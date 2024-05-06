@@ -39,13 +39,8 @@ public class GBFS {
         this.goal = goal;
     }
 
-    public ArrayList<String> search(File wordlist) {
-        PriorityQueue<ArrayList<String>> queue = new PriorityQueue<>(new Comparator<ArrayList<String>>() {
-            @Override
-            public int compare(ArrayList<String> path1, ArrayList<String> path2) {
-                return Integer.compare(heuristic(path1), heuristic(path2));
-            }
-        });
+    public Tuple<ArrayList<String>, Integer> search(File wordlist) {
+        PriorityQueue<ArrayList<String>> queue = new PriorityQueue<>(Comparator.comparingInt(this::heuristic));
         Set<String> visited = new HashSet<>();
         Map<String, String> parent = new HashMap<>();
 
@@ -67,8 +62,8 @@ public class GBFS {
             }
 
             if (current.equals(goal)) {
-                System.out.println("Path found: " + currentPath);
-                return currentPath;
+                Tuple<ArrayList<String>, Integer> result = new Tuple<>(currentPath, visited.size());
+                return result;
             }
 
             ArrayList<String> neighbors = NodeUtil.getNeighbors(current, wordlist);
@@ -83,7 +78,6 @@ public class GBFS {
             }
         }
 
-        System.out.println("No path found from " + start + " to " + goal);
         return null;
     }
 }

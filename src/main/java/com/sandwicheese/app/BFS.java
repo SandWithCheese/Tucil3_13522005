@@ -18,7 +18,7 @@ public class BFS {
         this.goal = goal;
     }
 
-    public ArrayList<String> search(File wordlist) {
+    public Tuple<ArrayList<String>, Integer> search(File wordlist) {
         Queue<ArrayList<String>> queue = new LinkedList<>();
         Set<String> visited = new HashSet<>();
         Map<String, String> parent = new HashMap<>();
@@ -41,8 +41,8 @@ public class BFS {
             }
 
             if (current.equals(goal)) {
-                System.out.println("Path found: " + currentPath);
-                return currentPath;
+                Tuple<ArrayList<String>, Integer> result = new Tuple<>(currentPath, visited.size());
+                return result;
             }
 
             ArrayList<String> neighbors = NodeUtil.getNeighbors(current, wordlist);
@@ -57,7 +57,6 @@ public class BFS {
             }
         }
 
-        System.out.println("No path found from " + start + " to " + goal);
         return null;
     }
 }
