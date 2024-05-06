@@ -3,6 +3,7 @@ package com.sandwicheese.app;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionEvent;
@@ -14,6 +15,15 @@ public class App extends JFrame implements ActionListener {
     private JComboBox<String> methodComboBox;
     private JTable pathTable;
     private JTextArea resultArea;
+
+    // Dark Purple
+    private static Color primaryColor = Color.decode("#2C001E");
+    // Orange
+    private static Color secondaryColor = Color.decode("#DD4814");
+    // White
+    private static Color textWhiteColor = Color.decode("#FFFFFF");
+    // Dark Gray
+    private static Color textGrayColor = Color.decode("#333333");
 
     public App() {
         setTitle("Word Ladder Solver");
@@ -67,6 +77,7 @@ public class App extends JFrame implements ActionListener {
         panel.add(methodComboBox, gbc);
 
         JButton solveButton = new JButton("Solve");
+        solveButton.setUI(new CustomButtonUI(secondaryColor));
         solveButton.addActionListener(this);
         solveButton.setFont(font);
         gbc.gridx = 0;
@@ -204,15 +215,6 @@ public class App extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        // Dark Purple
-        Color primaryColor = Color.decode("#2C001E");
-        // Orange
-        Color secondaryColor = Color.decode("#DD4814");
-        // White
-        Color textWhiteColor = Color.decode("#FFFFFF");
-        // Dark Gray
-        Color textGrayColor = Color.decode("#333333");
-
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -237,6 +239,26 @@ public class App extends JFrame implements ActionListener {
         UIManager.put("TextArea.background", textWhiteColor);
         UIManager.put("TextArea.foreground", textGrayColor);
 
-        new App();
+        SwingUtilities.invokeLater(App::new);
+    }
+
+    public static class CustomButtonUI extends BasicButtonUI {
+        private Color backgroundColor;
+
+        public CustomButtonUI(Color backgroundColor) {
+            this.backgroundColor = backgroundColor;
+        }
+
+        @Override
+        public void paint(Graphics g, JComponent c) {
+            AbstractButton b = (AbstractButton) c;
+            ButtonModel model = b.getModel();
+            Color color = model.isPressed() ? backgroundColor.darker() : backgroundColor;
+
+            g.setColor(color);
+            g.fillRect(0, 0, c.getWidth(), c.getHeight());
+
+            super.paint(g, c);
+        }
     }
 }
